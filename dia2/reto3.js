@@ -16,10 +16,8 @@ function pregunta(pregunta){
 }
 
 async function asyncAwait (){
-    let nombre;
-    let surname;
-    let age;
-    let persona = {nombre, surname, age};
+   
+    let persona = {nombre:"", surname:"", age:0};
     try{
         persona.nombre = await pregunta('¿Nombre? ')
         persona.surname = await pregunta('Apellido? ')

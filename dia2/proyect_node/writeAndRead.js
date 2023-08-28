@@ -1,7 +1,6 @@
 const fs = require('fs/promises')
 
 async function writeAndRead(path,obj){
-    console.log("entra en writeAndRead");
     try{
         await fs.writeFile(path,JSON.stringify(obj));
         // await console.log("Obj guardado en" + path);
