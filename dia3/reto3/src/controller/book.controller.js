@@ -1,6 +1,9 @@
 const Book = require('../models/book');
-let newBook = new Book (1, 12, "Libro ejemplo", "tapa blanda", "Anonino", 20, "Foto");
-let arrayBook = [newBook];
+let newBook1 = new Book (1, 12, "Libro 1", "tapa blanda", "Anonino", 20, "Foto");
+let newBook2 = new Book (2, 12, "Libro 2", "tapa blanda", "Anonino", 20, "Foto");
+let newBook3 = new Book (3, 12, "Libro 3", "tapa blanda", "Anonino", 20, "Foto");
+let newBook = null;
+let arrayBook = [newBook1,newBook2,newBook3];
 
 function getStart(request, response){
     let respuesta = {error: true, codigo: 200, mensaje: 'Punto de inicio'};
@@ -38,7 +41,7 @@ function postBook(request,response){
     let id_book = request.body.id_book;
     console.log(request.body);
 
-    const existingBook = arrayBook.find(book => book.id_book === id_book);
+    let existingBook = arrayBook.find(book => book.id_book === id_book);
 
     if(existingBook){
         respuesta = {error: true, codigo: 200, mensaje: 'Book ya existe'};
@@ -58,11 +61,11 @@ function postBook(request,response){
 //Modificar libro
 function putBook(request,response){
     let respuesta;
-    let id_book = request.params.id_book;
-    const existingBookIndex = arrayBook.findIndex(book => book.id_book === id_book);
-
+    let id_book = request.body.id_book;
+    let existingBookIndex = arrayBook.findIndex(book => book.id_book === id_book);
+    let existingBook;
     if(existingBookIndex !== -1){
-        let existingBook = arrayBook[existingBookIndex];
+        existingBook = arrayBook[existingBookIndex];
         
         existingBook.id_user = request.body.id_user;
         existingBook.title = request.body.title;
@@ -80,8 +83,8 @@ function putBook(request,response){
 
 function deleteBook(request,response){
     let respuesta;
-    let id_book = request.query.id;
-    const index = arrayBook.findIndex(book => book.id_book === id_book);
+    let id_book = request.body.id_book;
+    let index = arrayBook.findIndex(book => book.id_book === id_book);
 
     if(index !== -1){
         arrayBook.splice(index,1);
