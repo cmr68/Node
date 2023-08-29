@@ -14,6 +14,7 @@ function getBook(request, response){
     let respuesta;
     if(arrayBook.length > 0){
         respuesta = {error: false, codigo: 200, data: arrayBook}
+
     }else{
         respuesta = {error: true, codigo: 200, mensaje: "No hay libros registrados"};
     }
@@ -22,17 +23,22 @@ function getBook(request, response){
 
 //GET /books?id=5. Obtiene los datos del libro cuyo id coincide con el pasado por parámetro.
 function getBookParams(request,response){
-    let id_book = request.params.id;
+    let id_book = request.query.id_book;
+    let respuesta;
     let foundBook = false;
+    console.log(id_book);
     for(let book of arrayBook){
         if(id_book === book.id_book){
-            response.send({error: false, codigo: 200, data: book});
+            respuesta = {error: false, codigo: 200, data: book};
             foundBook = true;
         }
     }
+
     if(!foundBook){
-        response.send({error: true, codigo: 200, mensaje: "El libro no existe"})
+        respuesta = {error: true, codigo: 200, mensaje: "El libro no existe"};
     }
+
+    response.send(respuesta);
 }
 
 //Añadir nuevo libro 
