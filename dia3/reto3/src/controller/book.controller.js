@@ -21,14 +21,39 @@ function getBook(request, response){
     response.send(respuesta);
 }
 
-//GET /books?id=5. Obtiene los datos del libro cuyo id coincide con el pasado por parámetro.
 function getBookParams(request,response){
-    let id_book = request.query.id_book;
+    console.log(request.params);
+    let id_book = request.params.id;
+    console.log(id_book);
+
     let respuesta;
     let foundBook = false;
-    console.log(id_book);
+
     for(let book of arrayBook){
-        if(id_book === book.id_book){
+        if(id_book == book.id_book){
+            respuesta = {error: false, codigo: 200, data: book};
+            foundBook = true;
+        }
+    }
+
+    if(!foundBook){
+        respuesta = {error: true, codigo: 200, mensaje: "El libro no existe"};
+    }
+
+    response.send(respuesta);
+}
+
+function getBookQuery(request,response){
+
+    console.log(request.query);
+    let id_book = request.query.id_book;
+    console.log(id_book);
+
+    let respuesta;
+    let foundBook = false;
+
+    for(let book of arrayBook){
+        if(id_book == book.id_book){
             respuesta = {error: false, codigo: 200, data: book};
             foundBook = true;
         }
@@ -101,4 +126,4 @@ function deleteBook(request,response){
     response.send(respuesta);
 }
 
-module.exports = {getBook, getStart, postBook, putBook, deleteBook, getBookParams};
+module.exports = {getBook, getStart, postBook, putBook, deleteBook, getBookParams, getBookQuery};

@@ -6,7 +6,9 @@ router.get("/", booksCtrl.getStart);
 
 router.get("/books", booksCtrl.getBook);
 
-router.get("/books/:id_book", booksCtrl.getBookParams); //no funciona
+router.get("/books/:id", booksCtrl.getBookParams); //http://localhost:4000/books/2
+
+// router.get("/books", booksCtrl.getBookQuery); // http://localhost:4000/books?id_book=2
 
 router.post("/books", booksCtrl.postBook);
 
