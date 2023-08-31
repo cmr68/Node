@@ -16,7 +16,6 @@ function getBook(request, response){
     response.send(respuesta);
 }
 
-
 function postBook(request,response){
     let respuesta;
     console.log(request.body);

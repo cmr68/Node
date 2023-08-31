@@ -1,9 +1,11 @@
 const Book = require('../models/book');
-let newBook1 = new Book (1, 12, "Libro 1", "tapa blanda", "Anonino", 20, "Foto");
-let newBook2 = new Book (2, 12, "Libro 2", "tapa blanda", "Anonino", 20, "Foto");
-let newBook3 = new Book (3, 12, "Libro 3", "tapa blanda", "Anonino", 20, "Foto");
-let newBook = null;
-let arrayBook = [newBook1,newBook2,newBook3];
+let newBook;
+let arrayBook = [
+      new Book (10,0,"Primer libro", "Tapa blanda", "Autor1", 20, ""),
+      new Book (43464,562,"Segundo libro", "Tapa blanda", "Autor2", 20, "https://correos-marketplace.ams3.cdn.digitaloceanspaces.com/prod-new/uploads/correos-marketplace-shop/1/product/42464-hypp15nz-libro-el-corazon-helado-almudena-grandes-5.jpg"),
+      new Book (67884,562,"Tercer libro", "Tapa blanda", "Autor3", 20, ""),
+      new Book (31152,562,"Cuarto libro", "Tapa blanda", "Autor3", 20, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRigg5lNzYrLCaKM24Vvbwj9dnWsKR63lUiPQ&usqp=CAU")
+];
 
 function getStart(request, response){
     let respuesta = {error: true, codigo: 200, mensaje: 'Punto de inicio'};
@@ -30,6 +32,7 @@ function getBookParams(request,response){
     let foundBook = false;
 
     for(let book of arrayBook){
+        console.log(book);
         if(id_book == book.id_book){
             respuesta = {error: false, codigo: 200, data: book};
             foundBook = true;
@@ -72,11 +75,12 @@ function postBook(request,response){
     let id_book = request.body.id_book;
     console.log(request.body);
 
-    let existingBook = arrayBook.find(book => book.id_book === id_book);
+    let existingBook = arrayBook.find(book => book.id_book == id_book);
 
     if(existingBook){
         respuesta = {error: true, codigo: 200, mensaje: 'Book ya existe'};
     }else{
+        
         arrayBook.push(newBook = new Book ( request.body.id_book,
                                             request.body.id_user,
                                             request.body.title,
@@ -93,18 +97,20 @@ function postBook(request,response){
 function putBook(request,response){
     let respuesta;
     let id_book = request.body.id_book;
-    let existingBookIndex = arrayBook.findIndex(book => book.id_book === id_book);
-    let existingBook;
+    console.log("id_book por parametro en putBook",id_book);
+    
+    let existingBookIndex = arrayBook.findIndex(book => book.id_book == id_book);
+    
     if(existingBookIndex !== -1){
-        existingBook = arrayBook[existingBookIndex];
-        
-        existingBook.id_user = request.body.id_user;
-        existingBook.title = request.body.title;
-        existingBook.type = request.body.type;
-        existingBook.author = request.body.author;
-        existingBook.price = request.body.price;
-        existingBook.photo = request.body.photo;
+        let existingBook = arrayBook[existingBookIndex];
 
+        let campos = ["id_user", "title", "type", "author", "price", "photo"];
+
+        campos.forEach(campo =>{
+            if(request.body[campo] !== undefined && request.body[campo] !== ''){
+                existingBook[campo] = request.body[campo];
+            }
+        })
         respuesta = {error: false, codigo: 200, mensaje: 'Libro actualizado',data: existingBook};
     }else{
         respuesta = {error: true, codigo: 200, mensaje: 'El libro no existe',data: existingBook};
@@ -116,6 +122,7 @@ function deleteBook(request,response){
     let respuesta;
     let id_book = request.body.id_book;
     let index = arrayBook.findIndex(book => book.id_book === id_book);
+    console.log("id_book",id_book, index,"index");
 
     if(index !== -1){
         arrayBook.splice(index,1);
