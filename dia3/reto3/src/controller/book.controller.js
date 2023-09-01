@@ -1,5 +1,5 @@
 const Book = require('../models/book');
-let newBook;
+let newBook = null;
 let arrayBook = [
       new Book (10,0,"Primer libro", "Tapa blanda", "Autor1", 20, ""),
       new Book (43464,562,"Segundo libro", "Tapa blanda", "Autor2", 20, "https://correos-marketplace.ams3.cdn.digitaloceanspaces.com/prod-new/uploads/correos-marketplace-shop/1/product/42464-hypp15nz-libro-el-corazon-helado-almudena-grandes-5.jpg"),
@@ -32,9 +32,12 @@ function getBookParams(request,response){
     let foundBook = false;
 
     for(let book of arrayBook){
-        console.log(book);
+        console.log("book de getBookParams:", book);
         if(id_book == book.id_book){
-            respuesta = {error: false, codigo: 200, data: book};
+            console.log("if(id_book = ",id_book," == book.id_book = ",book.id_book,")");
+
+            respuesta = {error: false, codigo: 200, data_book: book};
+            console.log();
             foundBook = true;
         }
     }
@@ -121,16 +124,19 @@ function putBook(request,response){
 function deleteBook(request,response){
     let respuesta;
     let id_book = request.body.id_book;
-    let index = arrayBook.findIndex(book => book.id_book === id_book);
+
+    let index = arrayBook.findIndex(book => book.id_book == id_book.id_book);
     console.log("id_book",id_book, index,"index");
 
     if(index !== -1){
         arrayBook.splice(index,1);
-        respuesta = {error: false, codigo: 200, mensaje: 'Book borrado', data:arrayBook}
+        respuesta = {error: false, codigo: 200, mensaje: 'Book borrado', data: arrayBook}
     }else{
-        respuesta = {error: true, codigo: 200, mensaje: 'El libro no existe', data:id_book};
+        respuesta = {error: true, codigo: 200, mensaje: 'El libro no existe', data_book:id_book};
+        console.log("libro no existe");
     }
     response.send(respuesta);
+
 }
 
 module.exports = {getBook, getStart, postBook, putBook, deleteBook, getBookParams, getBookQuery};
